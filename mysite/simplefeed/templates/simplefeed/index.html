@@ -72,11 +72,16 @@
    <div class="text"><span>Category</span></div>
    <div class="clear"></div>
 </th>
+<th scope="col"  class="column-__str__">
+   <div class="text"><span>Difference</span></div>
+   <div class="clear"></div>
+</th>
+
 </tr>
 </thead>
 <tbody>
 {% for q in target_list %}
-<tr class="row1"><td class="action-checkbox"></td><th class="field-__str__"><a href="/feed/{{ q.id }}/updateform/">{{ q.url }}</a></th><th class="field-__str__">{{ q.category }}</th></tr>
+<tr class="row1"><td class="action-checkbox"></td><th class="field-__str__"><a href="/feed/{{ q.id }}/updateform/">{{ q.url }}</a></th><th class="field-__str__">{{ q.category }}</th><th class="field-__str__">{{ q.diff }}</th></tr>
 {% endfor %}
 
 </tbody>
