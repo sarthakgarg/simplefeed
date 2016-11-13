@@ -8,8 +8,8 @@ from bs4 import BeautifulSoup
 from difflib import Differ
 
 def diff(a, b):
-    l1 = s1.split(' ')
-    l2 = s2.split(' ')
+    l1 = a.split(' ')
+    l2 = b.split(' ')
     dif = list(Differ().compare(l1, l2))
     return " ".join(['<b>'+i[2:]+'</b>' if i[:1] == '+' else i[2:] for i in dif if not i[:1] in '-?'])
 
