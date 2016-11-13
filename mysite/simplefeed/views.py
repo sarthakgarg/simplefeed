@@ -37,7 +37,7 @@ def gethtml(url):
 def index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/feed/login_show')
-    target_list = Target.objects.order_by('url').all()
+    target_list = Target.objects.filter(owner=request.user).order_by('url')
     template = loader.get_template('simplefeed/index.html')
     context = {
         'target_list': target_list,
@@ -51,9 +51,11 @@ def register_show(request):
     return HttpResponse(template.render(context, request))
 
 def register(request):
-    # Add user already exists
-    User.objects.create_user(username = request.POST['username'], password = request.POST['password'])
-    return HttpResponseRedirect('/feed/')
+    if len(User.objects.filter(username = request.POST['username'])) > 0:
+        return HttpResponse("User already exists")
+    else:
+        User.objects.create_user(username = request.POST['username'], password = request.POST['password'])
+        return HttpResponseRedirect('/feed/')
 
 def login_show(request):
     template = loader.get_template('simplefeed/login.html')
@@ -94,7 +96,7 @@ def addform(request):
 def add(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/feed/login_show')
-    q = Target(url = request.POST['url'], category = request.POST['category'], content = gethtml(request.POST['url']))
+    q = Target(url = request.POST['url'], category = request.POST['category'], content = gethtml(request.POST['url']), owner = request.user)
     q.save()
     return HttpResponseRedirect('/feed/')
 
@@ -102,7 +104,7 @@ def updateform(request, target_id):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/feed/login_show')
     template = loader.get_template('simplefeed/updateform.html')
-    q = Target.objects.get(pk = target_id)
+    q = Target.objects.get(pk = target_id, owner = request.user)
     context = {
         'target': q,
     }
@@ -125,8 +127,3 @@ def delete(request, target_id):
     q = Target.objects.get(pk = target_id)
     q.delete()
     return HttpResponseRedirect("/feed/")
-
-
-#def serve(request):
-#    fruit_list = [fruit.as_json() for fruit in Fruits.objects.order_by('fruit_name').all()]
-#    return HttpResponse(json.dumps(fruit_list), content_type = 'application/json')
