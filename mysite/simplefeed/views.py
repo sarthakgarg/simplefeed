@@ -7,14 +7,10 @@ import urllib, re
 from bs4 import BeautifulSoup
 import difflib
 from lxml.html.diff import htmldiff
-<<<<<<< HEAD
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate, login, logout
-=======
 import ssl
 
-
->>>>>>> 9df1a8d63907cf9fb24289ae714629408d3924ef
 def diff(h1, h2):
     print h1
     print h2
@@ -96,14 +92,9 @@ def addform(request):
 
 
 def add(request):
-<<<<<<< HEAD
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/feed/login_show')
-    q = Target(url = request.POST['url'], category = request.POST['category'], content = parsehtml(request.POST['url']))
-=======
-# initialize the content as the content of the webpage and the diff as the null string
     q = Target(url = request.POST['url'], category = request.POST['category'], content = gethtml(request.POST['url']))
->>>>>>> 9df1a8d63907cf9fb24289ae714629408d3924ef
     q.save()
     return HttpResponseRedirect('/feed/')
 
@@ -118,12 +109,8 @@ def updateform(request, target_id):
     return HttpResponse(template.render(context, request))
 
 def update(request, target_id):
-<<<<<<< HEAD
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/feed/login_show')
-=======
-# initialize the content as the content of the webpage and the diff as the null string
->>>>>>> 9df1a8d63907cf9fb24289ae714629408d3924ef
     q = Target.objects.get(pk = target_id)
     q.url = request.POST['url']
     q.category = request.POST['category']
