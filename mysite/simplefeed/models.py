@@ -13,6 +13,7 @@ class Target(models.Model):
     category = models.CharField(max_length = 2, choices = CATEGORY, default = 'UR')
     content = models.CharField(max_length = 10000, default = "")
     diff = models.CharField(max_length = 10000, default = "")
+    epoch = models.DateTimeField(auto_now = True)
     def __str__ (self):
         return self.target_url
 
