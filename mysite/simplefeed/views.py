@@ -7,8 +7,14 @@ import urllib, re
 from bs4 import BeautifulSoup
 import difflib
 from lxml.html.diff import htmldiff
+<<<<<<< HEAD
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate, login, logout
+=======
+import ssl
+
+
+>>>>>>> 9df1a8d63907cf9fb24289ae714629408d3924ef
 def diff(h1, h2):
     print h1
     print h2
@@ -27,38 +33,15 @@ def diff(h1, h2):
     return res
 
 def gethtml(url):
-    html = urllib.urlopen(url).read()
+    context = ssl._create_unverified_context()
+    html = urllib.urlopen(url, context = context).read()
     return html
 
-def visible(element):
-    if element.parent.name in ['style', 'script', '[document]', 'head', 'title','spanid','button']:
-        return False
-    elif re.match('<!--.*-->', unicode(element)):
-        return False
-    return True
-
-def parsehtml(url):
-    html = urllib.urlopen(url).read()
-    soup = BeautifulSoup(html, "html.parser")
-    texts = soup.findAll(text=True)
-    visible_texts = filter(visible, texts)
-    #visible_texts = visible_texts[:-51]
-    s = ''.join(visible_texts)
-    s = ''.join(s.split())
-    return s
 
 def index(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/feed/login_show')
     target_list = Target.objects.order_by('url').all()
-    for t in target_list:
-        curr = gethtml(t.url)
-        if curr != t.content:
-            t.diff = diff(t.content, curr)
-            t.content = curr
-        else:
-            t.diff = ""
-        t.save()
     template = loader.get_template('simplefeed/index.html')
     context = {
         'target_list': target_list,
@@ -113,9 +96,14 @@ def addform(request):
 
 
 def add(request):
+<<<<<<< HEAD
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/feed/login_show')
     q = Target(url = request.POST['url'], category = request.POST['category'], content = parsehtml(request.POST['url']))
+=======
+# initialize the content as the content of the webpage and the diff as the null string
+    q = Target(url = request.POST['url'], category = request.POST['category'], content = gethtml(request.POST['url']))
+>>>>>>> 9df1a8d63907cf9fb24289ae714629408d3924ef
     q.save()
     return HttpResponseRedirect('/feed/')
 
@@ -130,13 +118,17 @@ def updateform(request, target_id):
     return HttpResponse(template.render(context, request))
 
 def update(request, target_id):
+<<<<<<< HEAD
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/feed/login_show')
+=======
+# initialize the content as the content of the webpage and the diff as the null string
+>>>>>>> 9df1a8d63907cf9fb24289ae714629408d3924ef
     q = Target.objects.get(pk = target_id)
     q.url = request.POST['url']
     q.category = request.POST['category']
-   # q.content = parsehtml(request.POST['url'])
-    q.content = ""
+    q.content = gethtml(request.POST['url'])
+    q.diff = ""
     q.save()
     return HttpResponseRedirect("/feed/")
 

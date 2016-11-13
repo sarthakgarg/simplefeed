@@ -14,5 +14,6 @@ class Target(models.Model):
     content = models.CharField(max_length = 10000, default = "")
     diff = models.CharField(max_length = 10000, default = "")
     # owner = models.ForeignKey(User)
+    epoch = models.DateTimeField(auto_now = True)
     def __str__ (self):
         return self.target_url
