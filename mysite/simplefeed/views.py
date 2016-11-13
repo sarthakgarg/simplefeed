@@ -5,6 +5,13 @@ from django.template import loader
 import json
 import urllib, re
 from bs4 import BeautifulSoup
+from difflib import Differ
+
+def diff(a, b):
+    l1 = s1.split(' ')
+    l2 = s2.split(' ')
+    dif = list(Differ().compare(l1, l2))
+    return " ".join(['<b>'+i[2:]+'</b>' if i[:1] == '+' else i[2:] for i in dif if not i[:1] in '-?'])
 
 def visible(element):
     if element.parent.name in ['style', 'script', '[document]', 'head', 'title','spanid','button']:
@@ -24,6 +31,15 @@ def parsehtml(url):
 
 def index(request):
     target_list = Target.objects.order_by('url').all()
+    for t in target_list:
+        print t.url
+        curr = parsehtml(t.url)
+        if curr != t.content:
+            t.diff = diff(curr, t.content)
+            t.content = curr
+        else:
+            t.diff = ""
+        t.save()
     template = loader.get_template('simplefeed/index.html')
     context = {
         'target_list': target_list,
@@ -56,7 +72,7 @@ def update(request, target_id):
     q = Target.objects.get(pk = target_id)
     q.url = request.POST['url']
     q.category = request.POST['category']
-    q.content = parsehtml(request.POST['url'])
+#    q.content = parsehtml(request.POST['url'])
     q.save()
     return HttpResponseRedirect("/feed/")
 
