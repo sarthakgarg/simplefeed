@@ -5,13 +5,29 @@ from django.template import loader
 import json
 import urllib, re
 from bs4 import BeautifulSoup
-from difflib import Differ
+import difflib
+from lxml.html.diff import htmldiff
 
-def diff(a, b):
-    l1 = s1.split(' ')
-    l2 = s2.split(' ')
-    dif = list(Differ().compare(l1, l2))
-    return " ".join(['<b>'+i[2:]+'</b>' if i[:1] == '+' else i[2:] for i in dif if not i[:1] in '-?'])
+def diff(h1, h2):
+    print h1
+    print h2
+    a = htmldiff(h1, h2)
+    start = []
+    end = []
+    n = len(a);
+    for i in range(n-6):
+        if a[i:i+6] == "</ins>":
+            end.append(i);
+        if a[i:i+5] == "<ins>":
+            start.append(i);
+    res = ""
+    for (x, y) in zip(start, end):
+        res += a[x+5:y]
+    return res
+
+def gethtml(url):
+    html = urllib.urlopen(url).read()
+    return html
 
 def visible(element):
     if element.parent.name in ['style', 'script', '[document]', 'head', 'title','spanid','button']:
@@ -25,6 +41,7 @@ def parsehtml(url):
     soup = BeautifulSoup(html, "html.parser")
     texts = soup.findAll(text=True)
     visible_texts = filter(visible, texts)
+    #visible_texts = visible_texts[:-51]
     s = ''.join(visible_texts)
     s = ''.join(s.split())
     return s
@@ -32,10 +49,9 @@ def parsehtml(url):
 def index(request):
     target_list = Target.objects.order_by('url').all()
     for t in target_list:
-        print t.url
-        curr = parsehtml(t.url)
+        curr = gethtml(t.url)
         if curr != t.content:
-            t.diff = diff(curr, t.content)
+            t.diff = diff(t.content, curr)
             t.content = curr
         else:
             t.diff = ""
@@ -72,7 +88,8 @@ def update(request, target_id):
     q = Target.objects.get(pk = target_id)
     q.url = request.POST['url']
     q.category = request.POST['category']
-#    q.content = parsehtml(request.POST['url'])
+   # q.content = parsehtml(request.POST['url'])
+    q.content = ""
     q.save()
     return HttpResponseRedirect("/feed/")
 
