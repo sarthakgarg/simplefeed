@@ -1,0 +1,122 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<html lang="en-us" >
+<head>
+<title>Change fruits | Django site admin</title>
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/base.css"%}" />
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css"%}" />
+    <script type="text/javascript" src="{% static "admin/jsi18n/"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/core.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/vendor/jquery/jquery.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/jquery.init.js"%}""></script>
+<script type="text/javascript" src="{% static "admin/js/admin/RelatedObjectLookups.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/actions.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/urlify.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/prepopulate.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/vendor/xregexp/xregexp.min.js"%}"></script>
+
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+
+
+<body class=" app-inventory model-fruits change-form"
+  data-admin-utc-offset="0">
+
+<!-- Container -->
+<div id="container">
+
+    
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+        
+<h1 id="site-name">Update Fruit</h1>
+        </div>
+        
+        
+        <div id="user-tools">
+            
+                Welcome,
+                <strong>admin</strong>.
+        </div>
+        
+        
+        
+    </div>
+    <!-- END Header -->
+    
+<div class="breadcrumbs">
+&rsaquo; <a href="/inventory/">Inventory</a>
+&rsaquo; {{ fruit.fruit_name }}
+</div>
+    <!-- Content -->
+    <div id="content" class="colM">
+        <h1>Change fruits</h1>
+        <div id="content-main">
+  <ul class="object-tools">
+  </ul>
+<form enctype="multipart/form-data" action="/inventory/update/" method="post" id="fruits_form" novalidate><input type='hidden' name='csrfmiddlewaretoken' value='p9U2rKBjjWTU5BwRQHnafE9mptW1JNgl' />
+<div>
+  <fieldset class="module aligned ">
+        <div class="form-row field-fruit_name">
+                <div>
+                        <label class="required" for="id_fruit_name">Fruit name:</label>
+                            <input class="vTextField" id="id_fruit_name" maxlength="200" name="fruit_name" type="text" value={{fruit.fruit_name}} readonly/>
+                </div>
+        </div>
+        <div class="form-row field-fruit_stock">
+                <div>
+                        <label class="required" for="id_fruit_stock">Fruit stock:</label>
+                            <input class="vIntegerField" id="id_fruit_stock" name="fruit_stock" type="text" value={{fruit.fruit_stock}} />
+                </div>
+        </div>
+        <div class="form-row field-fruit_price">
+                <div>
+                        <label class="required" for="id_fruit_price">Fruit price:</label>
+                            <input class="vIntegerField" id="id_fruit_price" name="fruit_price" type="text" value={{fruit.fruit_price}} />
+                </div>
+        </div>
+</fieldset>
+<div class="submit-row">
+<input type="submit" value="Save" class="default" name="_save" />
+    <p class="deletelink-box"><a href="/inventory/{{ fruit.fruit_name }}/delete/" class="deletelink">Delete</a></p>
+</div>
+    <script type="text/javascript">
+        (function($) {
+            $(document).ready(function() {
+                $('.add-another').click(function(e) {
+                    e.preventDefault();
+                    var event = $.Event('django:add-another-related');
+                    $(this).trigger(event);
+                    if (!event.isDefaultPrevented()) {
+                        showAddAnotherPopup(this);
+                    }
+                });
+                $('.related-lookup').click(function(e) {
+                    e.preventDefault();
+                    var event = $.Event('django:lookup-related');
+                    $(this).trigger(event);
+                    if (!event.isDefaultPrevented()) {
+                        showRelatedObjectLookupPopup(this);
+                    }
+                });
+            });
+        })(django.jQuery);
+    </script>
+<script type="text/javascript">
+(function($) {
+    var field;
+})(django.jQuery);
+</script>
+</div>
+</form></div>
+        <br class="clear" />
+    </div>
+    <!-- END Content -->
+
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+</body>
+</html>

@@ -1,0 +1,96 @@
+{% load staticfiles %}
+    <html lang="en-us" >
+<head>
+<title>Select targets to change | Django site admin</title>
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/base.css"%}" />
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css"%}" />
+    <script type="text/javascript" src="{% static "admin/jsi18n/"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/core.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/vendor/jquery/jquery.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/jquery.init.js"%}""></script>
+<script type="text/javascript" src="{% static "admin/js/admin/RelatedObjectLookups.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/actions.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/urlify.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/prepopulate.js"%}"></script>
+<script type="text/javascript" src="{% static "admin/js/vendor/xregexp/xregexp.min.js"%}"></script>
+<script type="text/javascript">
+(function($) {
+    $(document).ready(function($) {
+        $("tr input.action-select").actions();
+    });
+})(django.jQuery);
+</script>
+<meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+<body class=" app-simplefeed model-target change-list"
+  data-admin-utc-offset="0">
+<!-- Container -->
+<div id="container">
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+<h1 id="site-name">Target Management</h1>
+        </div>
+        <div id="user-tools">
+        
+                Welcome,
+                <strong>Admin</strong>.
+            
+        </div>
+    </div>
+    <!-- END Header -->
+<div class="breadcrumbs">
+&rsaquo; <a href="/feed/">Targets</a>
+</div>
+    <!-- Content -->
+    <div id="content" class="flex">
+        <h1>Select targets to change</h1>
+  <div id="content-main">
+        <ul class="object-tools">
+            <li>
+              <a href="/feed/addform/" class="addlink">
+                Add targets
+              </a>
+            </li>
+        </ul>
+    <div class="module" id="changelist">
+      <form id="changelist-form" method="post">{% csrf_token %}
+
+<div class="results">
+<table id="result_list">
+<thead>
+<tr>
+<th scope="col"  class="action-checkbox-column">
+   <div class="text"><span></span></div>
+   <div class="clear"></div>
+</th>
+<th scope="col"  class="column-__str__">
+   <div class="text"><span>Url</span></div>
+   <div class="clear"></div>
+</th>
+<th scope="col"  class="column-__str__">
+   <div class="text"><span>Category</span></div>
+   <div class="clear"></div>
+</th>
+</tr>
+</thead>
+<tbody>
+{% for q in target_list %}
+<tr class="row1"><td class="action-checkbox"></td><th class="field-__str__"><a href="/feed/{{ q.id }}/updateform/">{{ q.url }}</a></th><th class="field-__str__">{{ q.category }}</th></tr>
+{% endfor %}
+
+</tbody>
+</table>
+</div>
+
+</form>
+</div>
+</div>
+<br class="clear" />
+</div>
+<!-- END Content -->
+<div id="footer"></div>
+</div>
+<!-- END Container -->
+</body>
+</html>
