@@ -16,4 +16,9 @@ class Target(models.Model):
     owner = models.ForeignKey(User, default = 1)
     epoch = models.DateTimeField(auto_now = True)
     def __str__ (self):
-        return self.target_url
+        return self.url
+
+class Hash(models.Model):
+    owner = models.ForeignKey(User, default = 1)
+    hash = models.CharField(max_length = 10000, default = "")
+    

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Target
+from .models import Target, Hash
 from django.template import loader
 import json
 import urllib, re
@@ -10,6 +10,7 @@ from lxml.html.diff import htmldiff
 from django.contrib.auth.models import Group, User
 from django.contrib.auth import authenticate, login, logout
 import ssl
+import hashlib
 
 def diff(h1, h2):
     print h1
@@ -39,8 +40,11 @@ def index(request):
         return HttpResponseRedirect('/feed/login_show')
     target_list = Target.objects.filter(owner=request.user).order_by('url')
     template = loader.get_template('simplefeed/index.html')
+    h = Hash.objects.get(owner = request.user).hash
+    print h
     context = {
         'target_list': target_list,
+        'user': h,
     }
     return HttpResponse(template.render(context, request))
 
@@ -55,6 +59,10 @@ def register(request):
         return HttpResponse("User already exists")
     else:
         User.objects.create_user(username = request.POST['username'], password = request.POST['password'])
+        user = User.objects.get(username = request.POST['username'])
+        k = hashlib.sha512( "tvp" + user.username ).hexdigest()[0:10]
+        q = Hash(owner = user, hash = k)
+        q.save()
         return HttpResponseRedirect('/feed/')
 
 def login_show(request):

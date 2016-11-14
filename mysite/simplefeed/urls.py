@@ -13,5 +13,5 @@ urlpatterns = [
     url(r'^(?P<target_id>[0-9]+)/updateform/$', views.updateform, name = 'updateform'),
     url(r'^(?P<target_id>[0-9]+)/update/$', views.update, name = 'update'),
     url(r'^(?P<target_id>[0-9]+)/delete/$', views.delete, name = 'delete'),
-    url(r'^rss/$', TargetFeed()),
+    url(r'^(?P<user_id>[0-9,A-Z,a-z]+)/rss/$', TargetFeed()),
 ]
