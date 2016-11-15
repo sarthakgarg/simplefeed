@@ -70,7 +70,11 @@
         <div class="form-row field-category">
                 <div>
                         <label class="required" for="id_category">Category:</label>
-                            <input class="vTextField" id="id_category" name="category" type="text" maxlength="200" value={{target.category}} required/>
+                        <select id="id_category" name="category" required>
+                          <option value="MN">Manga</option>
+                          <option value="EM">Email</option>
+                          <option value="UR" selected="selected">URL</option>
+                        </select>
                 </div>
         </div>
 </fieldset>

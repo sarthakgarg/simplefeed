@@ -34,7 +34,7 @@
         <div id="user-tools">
 
                 Welcome,
-                <strong>{{request.user.username}}<a href="/feed/logout">Logout   :</a>{{ user }}</strong>.
+                <strong>{{request.user.username}}<a href="/feed/logout">Logout</a></strong>.
 
         </div>
     </div>
@@ -45,6 +45,7 @@
     <!-- Content -->
     <div id="content" class="flex">
         <h1>Select targets to change</h1>
+        <a href="/feed/{{ user }}/rss/"><h3>Subscribe to rss feed</h3></a>
   <div id="content-main">
         <ul class="object-tools">
             <li>
